@@ -1,303 +1,81 @@
 <template>
-  <v-app id="inspire" color="blue-lighten-3">
-    <!-- システムバー -->
-    <v-system-bar>
-      <v-spacer></v-spacer>
+  <div id="app">
+    <h1>AI チャットボット</h1>
+    <input v-model="userInput" placeholder="質問を入力してください" @keyup.enter="sendQuery" />
+    <button @click="sendQuery">送信</button>
 
-      <v-icon>mdi-square</v-icon>
+    <div v-if="loading">AIが応答しています...</div>
 
-      <v-icon>mdi-circle</v-icon>
+    <div v-if="response">
+      <h3>AIの応答：</h3>
+      <p>{{ response }}</p>
+    </div>
 
-      <v-icon>mdi-triangle</v-icon>
-    </v-system-bar>
-
-    <!-- アプリバー -->
-    <v-app-bar
-      color="blue-lighten-3"
-      height="72"
-      flat
-    >
-
-    <input v-model="userInput" placeholder="テキストを入力してください">
-    <button @click="submitInput">決定</button>
-
-      <v-avatar
-        class="ms-2"
-        color="surface-variant"
-        size="32"
-        variant="flat"
-      ></v-avatar>
-      <v-avatar
-        class="mx-2"
-        color="surface-variant"
-        size="32"
-        variant="flat"
-      ></v-avatar>
-
-      <v-btn
-        class="me-2"
-        color="grey"
-        height="40"
-        variant="flat"
-        width="80"
-      ></v-btn>
-
-      <v-btn
-        class="me-2"
-        color="grey"
-        height="40"
-        variant="flat"
-        width="100"
-      ></v-btn>
-
-      <v-btn
-        class="me-2"
-        color="grey"
-        height="40"
-        variant="flat"
-        width="120"
-      ></v-btn>
-
-      <v-btn
-        class="me-2"
-        color="grey"
-        height="40"
-        variant="flat"
-        width="120"
-      ></v-btn>
-
-      <v-spacer></v-spacer>
-    </v-app-bar>
-
-    <!-- フッター -->
-    <v-footer
-      color="blue-lighten-2"
-      height="44"
-      app
-    ></v-footer>
-
-    <!-- ナビゲーションドロワー -->
-    <v-navigation-drawer floating>
-      <div class="d-flex px-2 my-2">
-        <v-btn
-          class="flex-grow-1"
-          color="grey"
-          height="40"
-          variant="flat"
-        ></v-btn>
-
-        <v-avatar
-          class="ms-2"
-          color="surface-variant"
-          variant="flat"
-          rounded
-        ></v-avatar>
-      </div>
-
-      <div class="d-flex px-2 my-2 align-center">
-        <v-btn
-          class="flex-grow-1 me-2"
-          color="grey-lighten-4"
-          height="40"
-          variant="flat"
-        ></v-btn>
-
-        <v-avatar
-          color="surface-variant"
-          size="18"
-        ></v-avatar>
-
-        <v-avatar
-          class="ms-1"
-          color="surface-variant"
-          size="18"
-        ></v-avatar>
-      </div>
-
-      <div class="px-2 my-2">
-        <v-text-field
-          class="mb-4"
-          density="compact"
-          prepend-inner-icon="mdi-magnify"
-          variant="solo-filled"
-          flat
-          hide-details
-        ></v-text-field>
-
-        <v-sheet
-          class="mb-2"
-          color="surface-variant"
-          height="24"
-          rounded="pill"
-          width="50%"
-        ></v-sheet>
-
-        <v-sheet
-          class="mb-1"
-          color="grey-lighten-1"
-          height="12"
-          rounded="pill"
-          width="40%"
-        ></v-sheet>
-
-        <v-sheet
-          class="mb-1"
-          color="grey-lighten-1"
-          height="12"
-          rounded="pill"
-          width="20%"
-        ></v-sheet>
-
-        <v-sheet
-          class="mb-1"
-          color="grey-lighten-1"
-          height="12"
-          rounded="pill"
-          width="90%"
-        ></v-sheet>
-
-        <v-sheet
-          color="grey-lighten-1"
-          height="12"
-          rounded="pill"
-          width="70%"
-        ></v-sheet>
-
-        <v-divider class="my-6"></v-divider>
-
-        <v-sheet
-          class="mb-2"
-          color="surface-variant"
-          height="24"
-          rounded="pill"
-          width="30%"
-        ></v-sheet>
-
-        <v-sheet
-          class="mb-1"
-          color="grey-lighten-1"
-          height="12"
-          rounded="pill"
-          width="65%"
-        ></v-sheet>
-
-        <v-sheet
-          class="mb-1"
-          color="grey-lighten-1"
-          height="12"
-          rounded="pill"
-          width="70%"
-        ></v-sheet>
-
-        <v-sheet
-          class="mb-1"
-          color="grey-lighten-1"
-          height="12"
-          rounded="pill"
-          width="40%"
-        ></v-sheet>
-
-        <v-sheet
-          color="grey-lighten-1"
-          height="12"
-          rounded="pill"
-          width="100%"
-        ></v-sheet>
-
-        <v-divider class="my-6"></v-divider>
-      </div>
-    </v-navigation-drawer>
-
-    <!-- メインコンテンツ -->
-    <v-main>
-      <v-sheet
-        class="mx-auto pa-2 pt-6"
-        color="blue-lighten-4"
-      >
-        <v-sheet
-          color="blue-lighten-2"
-          height="24"
-          rounded="pill"
-          width="88"
-        ></v-sheet>
-
-        <v-slide-group show-arrows>
-          <v-slide-group-item
-            v-for="n in 5"
-            :key="n"
-          >
-            <v-sheet
-              class="ma-3"
-              color="blue-lighten-1"
-              height="200"
-              width="250"
-              rounded
-            ></v-sheet>
-          </v-slide-group-item>
-        </v-slide-group>
-      </v-sheet>
-
-      <v-sheet
-        class="mx-auto pa-2 pt-6"
-        color="blue-lighten-2"
-      >
-        <v-sheet
-          color="blue"
-          height="24"
-          rounded="pill"
-          width="88"
-        ></v-sheet>
-
-        <v-slide-group show-arrows>
-          <v-slide-group-item
-            v-for="n in 15"
-            :key="n"
-          >
-            <v-sheet
-              :width="n === 1 ? 300 : 150"
-              class="ma-3"
-              color="blue-lighten-1"
-              height="200"
-              rounded
-            ></v-sheet>
-          </v-slide-group-item>
-        </v-slide-group>
-
-        <v-container fluid>
-          <v-row>
-            <v-col
-              v-for="n in 24"
-              :key="n"
-              cols="2"
-            >
-              <v-sheet
-                color="blue-lighten-1"
-                height="200"
-                rounded
-              ></v-sheet>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-sheet>
-    </v-main>
-  </v-app>
+    <div v-if="error" class="error">
+      <p>エラーが発生しました。もう一度試してください。</p>
+    </div>
+  </div>
 </template>
 
 <script setup>
-
+import { ref } from 'vue';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
+// 変数の定義
+const userInput = ref(''); // ユーザー入力
+const response = ref('');  // AIの応答
+const loading = ref(false); // ローディング状態
+const error = ref(false); // エラーフラグ
 
-async function main() {
+// 質問を送信する関数
+const sendQuery = async () => {
+  if (!userInput.value.trim()) return; // 入力が空の場合、何もしない
 
-const genAI = new GoogleGenerativeAI("AIzaSyDSEMSQ9jiQ_04mQvVU_rjXdDV7qMr-w4A");
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  loading.value = true;
+  response.value = '';
+  error.value = false;
 
-const prompt = "Explain how AI works";
+  try {
+    const genAI = new GoogleGenerativeAI('AIzaSyDSEMSQ9jiQ_04mQvVU_rjXdDV7qMr-w4A');
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
-const result = await model.generateContent(prompt);
-console.log(result.response.text());
+    const result = await model.generateContent(userInput.value);
+    response.value = result.response.text();
+  } catch (err) {
+    error.value = true;
+    console.error('Error occurred:', err);
+  } finally {
+    loading.value = false;
+  }
+
+  userInput.value = ''; // 入力をクリア
+};
+</script>
+
+<style scoped>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  text-align: center;
+  padding: 50px;
 }
 
-main();
-</script>
+input {
+  padding: 10px;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+button {
+  padding: 10px;
+  font-size: 16px;
+}
+
+div {
+  margin-top: 20px;
+}
+
+.error {
+  color: red;
+}
+</style>
+

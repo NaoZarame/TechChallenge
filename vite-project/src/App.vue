@@ -1,5 +1,6 @@
 <template>
-  <v-app id="inspire">
+  <v-app id="inspire" color="blue-lighten-3">
+    <!-- システムバー -->
     <v-system-bar>
       <v-spacer></v-spacer>
 
@@ -10,11 +11,16 @@
       <v-icon>mdi-triangle</v-icon>
     </v-system-bar>
 
+    <!-- アプリバー -->
     <v-app-bar
-      color="grey-lighten-4"
+      color="blue-lighten-3"
       height="72"
       flat
     >
+
+    <input v-model="userInput" placeholder="テキストを入力してください">
+    <button @click="submitInput">決定</button>
+
       <v-avatar
         class="ms-2"
         color="surface-variant"
@@ -63,12 +69,14 @@
       <v-spacer></v-spacer>
     </v-app-bar>
 
+    <!-- フッター -->
     <v-footer
-      color="grey"
+      color="blue-lighten-2"
       height="44"
       app
     ></v-footer>
 
+    <!-- ナビゲーションドロワー -->
     <v-navigation-drawer floating>
       <div class="d-flex px-2 my-2">
         <v-btn
@@ -200,13 +208,14 @@
       </div>
     </v-navigation-drawer>
 
+    <!-- メインコンテンツ -->
     <v-main>
       <v-sheet
         class="mx-auto pa-2 pt-6"
-        color="grey-lighten-4"
+        color="blue-lighten-4"
       >
         <v-sheet
-          color="grey-lighten-2"
+          color="blue-lighten-2"
           height="24"
           rounded="pill"
           width="88"
@@ -219,7 +228,7 @@
           >
             <v-sheet
               class="ma-3"
-              color="grey-lighten-1"
+              color="blue-lighten-1"
               height="200"
               width="250"
               rounded
@@ -230,10 +239,10 @@
 
       <v-sheet
         class="mx-auto pa-2 pt-6"
-        color="grey-lighten-2"
+        color="blue-lighten-2"
       >
         <v-sheet
-          color="grey"
+          color="blue"
           height="24"
           rounded="pill"
           width="88"
@@ -247,7 +256,7 @@
             <v-sheet
               :width="n === 1 ? 300 : 150"
               class="ma-3"
-              color="grey-lighten-1"
+              color="blue-lighten-1"
               height="200"
               rounded
             ></v-sheet>
@@ -262,7 +271,7 @@
               cols="2"
             >
               <v-sheet
-                color="grey-lighten-1"
+                color="blue-lighten-1"
                 height="200"
                 rounded
               ></v-sheet>
@@ -275,5 +284,20 @@
 </template>
 
 <script setup>
-  //
+
+import { GoogleGenerativeAI } from '@google/generative-ai';
+
+
+async function main() {
+
+const genAI = new GoogleGenerativeAI("AIzaSyDSEMSQ9jiQ_04mQvVU_rjXdDV7qMr-w4A");
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+const prompt = "Explain how AI works";
+
+const result = await model.generateContent(prompt);
+console.log(result.response.text());
+}
+
+main();
 </script>
